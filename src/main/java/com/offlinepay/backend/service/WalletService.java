@@ -19,15 +19,15 @@ public class WalletService {
     @Autowired
      private UserRepository userRepository;
 
-    public WalletResponse loadMoney(LoadWalletRequest req){
+    public WalletResponse loadMoney(LoadWalletRequest req) {
 
         // find User
-        User user   = userRepository.findById(req.getUserId())
-                .orElseThrow(()-> new RuntimeException("user not found"));
+        User user = userRepository.findById(req.getUserId())
+                .orElseThrow(() -> new RuntimeException("user not found"));
 
         // find wallet
-        Wallet wallet  =  walletRepository.findByUser(user)
-                .orElseThrow(()-> new RuntimeException("Wallet not found"));
+        Wallet wallet = walletRepository.findByUser(user)
+                .orElseThrow(() -> new RuntimeException("Wallet not found"));
 
         // Add balance
         wallet.setBalance(wallet.getBalance() + req.getAmount());
