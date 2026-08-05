@@ -41,7 +41,16 @@ public class WalletService {
         );
     }
     public  WalletResponse  getBalance(Long userId){
-         User  user  =
-    }
+         User  user  = userRepository.findById(userId)
+                 .orElseThrow(() -> new RuntimeException("user not found"));
 
+         Wallet  wallet  =  walletRepository.findByUser(user)
+                 .orElseThrow(()-> new RuntimeException("wallet not found"));
+
+         return new WalletResponse(
+                 wallet.getId(),
+                 user.getId(),
+                 wallet.getBalance()
+         );
+    }
 }

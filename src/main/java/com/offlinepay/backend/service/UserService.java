@@ -6,7 +6,9 @@ import com.offlinepay.backend.dto.LoginResponse;
 import com.offlinepay.backend.dto.RegisterRequest;
 import com.offlinepay.backend.dto.UserResponse;
 import com.offlinepay.backend.model.User;
+import com.offlinepay.backend.model.Wallet;
 import com.offlinepay.backend.repository.UserRepository;
+import com.offlinepay.backend.repository.WalletRepository;
 import com.offlinepay.backend.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,7 +18,8 @@ import org.springframework.stereotype.Service;
 public class UserService {
     @Autowired
     private UserRepository userRepo;
-
+    @Autowired
+    private WalletRepository walletRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
@@ -42,19 +45,29 @@ public class UserService {
         //saved
         User saved = userRepo.save(user);
 
+        //Create wallet
+        Wallet wallet  = new Wallet();
+        wallet.setUser(saved);
+        wallet.setBalance(0.0);
+        walletRepository.save(wallet);
+
         // return DTO
         return mapToResponse(saved);
 
     }
 
     private UserResponse mapToResponse(User user) {
+
+        Wallet wallet = walletRepository.findByUser(user)
+                .orElseThrow(() -> new RuntimeException("Wallet not found"));
+
         UserResponse res = new UserResponse();
         res.setId(user.getId());
         res.setName(user.getName());
         res.setEmail(user.getEmail());
-        res.setWalletBalance(user.getWalletBalance());
-        return res;
+        res.setWalletBalance(wallet.getBalance());
 
+        return res;
     }
 
     public LoginResponse login(LoginRequest req) {

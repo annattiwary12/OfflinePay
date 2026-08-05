@@ -20,6 +20,6 @@ public class User {
 
     private String password;
 
-    private Double walletBalance = 0.0;
+
 }
 

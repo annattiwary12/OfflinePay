@@ -3,14 +3,17 @@ package com.offlinepay.backend.dto;
 
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 @Data
 public class LoadWalletRequest {
 
-    @NotBlank( message = "Required  userId")
-    private  Long UserId;
+    @NotNull( message = "UserId is required")
+    private  Long userId;
 
-    @NotBlank(message = " amount  is Required")
-    private  double amount  = 0.0;
+    @Positive(message = "Amount must be greater than 0")
+    private  double amount;
+
 }
