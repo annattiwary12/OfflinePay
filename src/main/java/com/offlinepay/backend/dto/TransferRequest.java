@@ -13,6 +13,6 @@ public class TransferRequest {
     @NotNull(message = "Receiver ID is required")
     private Long receiverId;
     @Positive(message =  "Amount must be  greater than 0")
-    private String amount;
+    private double amount;
 }
 ;
