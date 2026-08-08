@@ -28,6 +28,7 @@ public class AuthController {
         return ResponseEntity.status(201)
                 .body(res);
     }
+
     @PostMapping("/login")
     public ResponseEntity<LoginResponse>login(
             @RequestBody LoginRequest req){
